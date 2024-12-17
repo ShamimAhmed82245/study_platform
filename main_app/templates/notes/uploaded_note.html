@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% if error %}
+    <div style="color: red;">
+        <p><strong>Error:</strong> {{ error }}</p>
+    </div>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="title">Note Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="file">Upload Note:</label>
+        <input type="file" id="file" name="file" required>
+
+        <button type="submit">Upload</button>
+    </form>
+</body>
+
+</html>
