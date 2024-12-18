@@ -1,16 +1,5 @@
-from main_app.models import User
+from main_app.models import User, Note, StudyGroup
 def run():
-    password = "123"
-    username="rana123"
-    first_name="Joual"
-    last_name ="Rana" 
-    email = "abc@gmail.com"
-    role = "student"
-    User.objects.create(
-        username=username,
-        password=password,
-        first_name=first_name,
-        last_name = last_name,
-        email=email,
-        role=role
-    )
+    user = User.objects.create_user(username='testuser', email='test@example.com', password='password123', role='student')
+    group = StudyGroup.objects.create(name='Math Study Group')
+    group.members.add(user)

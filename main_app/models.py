@@ -8,7 +8,9 @@ class User(AbstractUser):
         ('teacher', 'Teacher'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-
+    email = models.EmailField(unique=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
     # Avoid conflicts with default 'groups' and 'user_permissions' fields
     groups = models.ManyToManyField(
         'auth.Group',
