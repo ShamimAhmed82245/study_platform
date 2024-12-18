@@ -48,3 +48,8 @@ def upload_note_view(request):
         print(obj)
         return redirect('notes_list')
     return render(request,'notes/uploaded_note.html')
+
+
+def note_lists(request):
+    all_notes = Note.objects.all()
+    return render(request, 'notes/note_lists.html',{"notes":all_notes})

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+{% for obj in notes %}
+{{obj.file}}
+<img src="{{obj.file.url}}" alt="{{obj.file}}" srcset="">
+{% endfor %}
+
+{% endblock body %}
