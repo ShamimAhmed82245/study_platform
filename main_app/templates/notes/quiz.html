@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Generated Quiz</h1>
+    <div id="quiz-container">{{ quiz|safe }}</div>
+</div>
+
+{% endblock body %}

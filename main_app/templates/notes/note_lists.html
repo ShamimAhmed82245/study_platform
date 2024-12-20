@@ -3,8 +3,19 @@
 {% block body %}
 
 {% for obj in notes %}
-{{obj.file}}
+<h1>{{obj.file}}</h1>
+
 <img src="{{obj.file.url}}" alt="{{obj.file}}" srcset="">
+<a href="{{ obj.file.url }}" target="_blank">Download PDF</a>
+
+<form action="{% url 'main_app:quiz' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="img_path" value="{{ obj.file.url }}">
+    <input type="submit" value="quiz">
+</form>
+
+
+
 {% endfor %}
 
 {% endblock body %}

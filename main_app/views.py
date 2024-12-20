@@ -4,6 +4,11 @@ from .models import Note
 import pytesseract
 from PIL import Image
 from django.core.files.storage import default_storage
+import google.generativeai as genai
+from IPython.display import Image, display
+import os
+from django.conf import settings
+
 
 # Create your views here.
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -53,3 +58,28 @@ def upload_note_view(request):
 def note_lists(request):
     all_notes = Note.objects.all()
     return render(request, 'notes/note_lists.html',{"notes":all_notes})
+
+
+
+def quiz(request):
+    img_path = request.POST.get('img_path')
+    if img_path is None:
+        return render(request, 'notes/quiz.html', {"error": "Image path not provided."})
+
+    # Remove the '/media/' part from img_path if it's already included
+    if img_path.startswith(settings.MEDIA_URL):
+        img_path = img_path[len(settings.MEDIA_URL):]
+
+    # Convert the remaining path to an absolute file path
+    absolute_path = os.path.join(settings.MEDIA_ROOT, img_path)
+
+    if not os.path.isfile(absolute_path):
+        return render(request, 'notes/quiz.html', {"error": f"File not found: {absolute_path}"})
+
+    genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
+    sample_file = genai.upload_file(path=absolute_path)
+    model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-002")
+    text = "Generate quiz from the file.Use html css and javascript for design and style.Don't return any character or syntaxt that does not belongs to html, css and javascript"
+    response = model.generate_content([text, sample_file])
+
+    return render(request, 'notes/quiz.html', {"quiz": response.candidates[0].content.parts[0].text})

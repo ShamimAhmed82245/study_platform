@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/',LoginView.as_view(template_name='login.html',authentication_form=EmailAuthenticationForm,),name='login'),
     path('logout/',LogoutView.as_view(next_page='/'),name='logout'),
     path('password_reset/', PasswordResetView.as_view(template_name='password_reset_form.html'), name='password_reset'),
+    path('quiz/',views.quiz,name='quiz'),
 ]
